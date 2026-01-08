@@ -8,4 +8,5 @@ Bite Count adalah chatbot yang membantu menghitung kalori makanan langsung lewat
 # anggota
 noverita
 
-#
+# anggota
+Mohammad Ridho Pamungkas
