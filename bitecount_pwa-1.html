@@ -473,6 +473,68 @@
             border-radius: 8px;
             border: 2px solid #06B6D4;
         }
+
+        /* Profile Picture Styles */
+        .profile-picture {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #06B6D4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-picture:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .profile-picture-lg {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #06B6D4;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .profile-details {
+            flex: 1;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .edit-profile-btn {
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            border-radius: 8px;
+            color: #06B6D4;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .edit-profile-btn:hover {
+            background: rgba(6, 182, 212, 0.4);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -576,8 +638,28 @@
         </div>
 
         <div class="container py-4">
+            <!-- Profil User Section -->
             <div class="glass-card mb-4">
-                <h4 class="mb-3">Halo, <span id="displayName">User</span>! 👋</h4>
+                <div class="profile-info">
+                    <div class="position-relative">
+                        <img id="userProfileImage" 
+                             src="https://ui-avatars.com/api/?name=User&background=06B6D4&color=fff&size=128" 
+                             class="profile-picture"
+                             onclick="showEditProfileModal()">
+                        <span class="position-absolute bottom-0 end-0 bg-success border border-2 border-dark rounded-circle" 
+                              style="width: 12px; height: 12px;"></span>
+                    </div>
+                    <div class="profile-details">
+                        <h4 class="mb-1" id="displayName">User</h4>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="profile-badge" id="userGoalBadge">Target: Turunkan Berat</span>
+                            <button class="edit-profile-btn" onclick="showEditProfileModal()">
+                                <i class="fas fa-edit"></i> Edit Profil
+                            </button>
+                        </div>
+                        <p class="text-muted small mb-0 mt-2" id="userBio">Belum ada bio</p>
+                    </div>
+                </div>
                 
                 <div class="progress-ring mb-4">
                     <svg width="200" height="200">
@@ -703,6 +785,18 @@
 
             <div class="glass-card">
                 <h4 class="mb-4">Pengaturan Profil</h4>
+                <div class="profile-info mb-4">
+                    <img id="settingsProfileImage" 
+                         src="https://ui-avatars.com/api/?name=User&background=06B6D4&color=fff&size=128" 
+                         class="profile-picture-lg">
+                    <div class="profile-details">
+                        <h5 id="settingsUserName">User</h5>
+                        <p class="text-muted" id="settingsUserEmail">user@example.com</p>
+                        <button class="edit-profile-btn" onclick="showEditProfileModal()">
+                            <i class="fas fa-edit"></i> Edit Profil
+                        </button>
+                    </div>
+                </div>
                 <div class="mb-3">
                     <strong>Target Kalori Harian:</strong> <span id="settingCalories">0</span> kkal
                 </div>
@@ -859,6 +953,68 @@
         </div>
     </div>
 
+    <!-- Modal: Edit Profile -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-user-edit"></i> Edit Profil</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Foto Profil Section -->
+                    <div class="text-center mb-4">
+                        <div class="position-relative d-inline-block">
+                            <div class="profile-picture-container" id="profilePictureContainer">
+                                <img id="profileImagePreview" 
+                                     src="https://ui-avatars.com/api/?name=User&background=06B6D4&color=fff&size=128" 
+                                     class="profile-picture-lg"
+                                     style="cursor: pointer;"
+                                     onclick="document.getElementById('profileImageInput').click()">
+                            </div>
+                            <button class="btn btn-sm btn-info position-absolute bottom-0 end-0 rounded-circle" 
+                                    style="width: 36px; height: 36px;"
+                                    onclick="document.getElementById('profileImageInput').click()">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                            <input type="file" id="profileImageInput" accept="image/*" hidden>
+                        </div>
+                        <p class="mt-2 text-muted small">Klik foto untuk upload gambar baru</p>
+                    </div>
+                    
+                    <!-- Form Edit Profile -->
+                    <div class="mb-3">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="search-bar" id="editName" placeholder="Masukkan nama Anda">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="search-bar" id="editEmail" placeholder="email@anda.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Bio / Deskripsi</label>
+                        <textarea class="search-bar" id="editBio" rows="2" placeholder="Ceritakan tentang diri Anda..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tujuan Utama</label>
+                        <select class="search-bar" id="editGoal">
+                            <option value="deficit">Turunkan Berat Badan</option>
+                            <option value="maintain">Pertahankan Berat Badan</option>
+                            <option value="surplus">Naikkan Massa Otot</option>
+                            <option value="health">Kesehatan Umum</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="neon-btn" onclick="saveProfile()">
+                        <i class="fas fa-save"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
         // Data Storage
@@ -897,6 +1053,9 @@
             if (userData.name) {
                 showDashboard();
             }
+            
+            // Setup profile image upload
+            setupProfileImageUpload();
         };
 
         // Profile Setup
@@ -911,7 +1070,11 @@
                 height: parseInt(document.getElementById('height').value),
                 weight: parseInt(document.getElementById('weight').value),
                 activity: parseFloat(document.getElementById('activity').value),
-                goal: document.getElementById('goal').value
+                goal: document.getElementById('goal').value,
+                email: "",
+                bio: "",
+                profileImage: "",
+                goalText: getGoalText(document.getElementById('goal').value)
             };
 
             calculateCalories();
@@ -946,6 +1109,16 @@
             userData.bmr = Math.round(bmr);
             userData.tdee = Math.round(tdee);
             userData.dailyTarget = Math.round(dailyTarget);
+        }
+
+        // Get goal text
+        function getGoalText(goal) {
+            switch(goal) {
+                case 'deficit': return 'Turunkan Berat';
+                case 'maintain': return 'Pertahankan Berat';
+                case 'surplus': return 'Naikkan Berat';
+                default: return 'Kesehatan';
+            }
         }
 
         // Search Food
@@ -1038,7 +1211,31 @@
             const remaining = userData.dailyTarget - totalCalories;
             const percentage = Math.min((totalCalories / userData.dailyTarget) * 100, 100);
 
-            document.getElementById('displayName').textContent = userData.name;
+            // Update profile section
+            document.getElementById('displayName').textContent = userData.name || 'User';
+            document.getElementById('userGoalBadge').textContent = `Target: ${userData.goalText || 'Turunkan Berat'}`;
+            document.getElementById('userBio').textContent = userData.bio || 'Belum ada bio';
+            
+            // Update profile image
+            const profileImage = document.getElementById('userProfileImage');
+            const settingsProfileImage = document.getElementById('settingsProfileImage');
+            if (userData.profileImage) {
+                profileImage.src = userData.profileImage;
+                settingsProfileImage.src = userData.profileImage;
+            } else {
+                const name = userData.name || 'User';
+                profileImage.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=06B6D4&color=fff&size=128`;
+                settingsProfileImage.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=06B6D4&color=fff&size=128`;
+            }
+
+            // Update settings page
+            document.getElementById('settingsUserName').textContent = userData.name || 'User';
+            document.getElementById('settingsUserEmail').textContent = userData.email || 'user@example.com';
+            document.getElementById('settingCalories').textContent = userData.dailyTarget || 0;
+            document.getElementById('settingBMR').textContent = userData.bmr || 0;
+            document.getElementById('settingTDEE').textContent = userData.tdee || 0;
+
+            // Update calories and macros
             document.getElementById('remainingCalories').textContent = Math.max(remaining, 0);
             document.getElementById('proteinValue').textContent = totalProtein;
             document.getElementById('carbValue').textContent = totalCarbs;
@@ -1105,9 +1302,7 @@
             setTimeout(() => {
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                 document.getElementById('settingsPage').classList.add('active');
-                document.getElementById('settingCalories').textContent = userData.dailyTarget;
-                document.getElementById('settingBMR').textContent = userData.bmr;
-                document.getElementById('settingTDEE').textContent = userData.tdee;
+                updateDashboard();
                 hideLoading();
             }, 800);
         }
@@ -1165,6 +1360,93 @@
                 localStorage.removeItem('biteCountData');
                 location.reload();
             }
+        }
+
+        // ========== PROFILE FUNCTIONS ==========
+
+        function showEditProfileModal() {
+            const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+            
+            // Fill form with current data
+            document.getElementById('editName').value = userData.name || '';
+            document.getElementById('editEmail').value = userData.email || '';
+            document.getElementById('editBio').value = userData.bio || '';
+            document.getElementById('editGoal').value = userData.goal || 'deficit';
+            
+            // Set profile image preview
+            const preview = document.getElementById('profileImagePreview');
+            if (userData.profileImage) {
+                preview.src = userData.profileImage;
+            } else {
+                const name = userData.name || 'User';
+                preview.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=06B6D4&color=fff&size=128`;
+            }
+            
+            modal.show();
+        }
+
+        function setupProfileImageUpload() {
+            const profileImageInput = document.getElementById('profileImageInput');
+            const profileImagePreview = document.getElementById('profileImagePreview');
+            
+            profileImageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                // Check file size (max 2MB for profile picture)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('File terlalu besar! Maksimum 2MB untuk foto profil.');
+                    return;
+                }
+                
+                // Check file type
+                if (!file.type.startsWith('image/')) {
+                    alert('File harus berupa gambar!');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileImagePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function saveProfile() {
+            const name = document.getElementById('editName').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const bio = document.getElementById('editBio').value.trim();
+            const goal = document.getElementById('editGoal').value;
+            
+            if (!name) {
+                alert('Nama tidak boleh kosong!');
+                return;
+            }
+            
+            // Update user data
+            userData.name = name;
+            userData.email = email;
+            userData.bio = bio;
+            userData.goal = goal;
+            userData.goalText = getGoalText(goal);
+            
+            // Save profile image if changed
+            const preview = document.getElementById('profileImagePreview');
+            if (preview.src && !preview.src.includes('ui-avatars.com')) {
+                userData.profileImage = preview.src;
+            }
+            
+            // Recalculate calories if goal changed
+            if (goal !== userData.goal) {
+                userData.goal = goal;
+                calculateCalories();
+            }
+            
+            saveData();
+            updateDashboard();
+            bootstrap.Modal.getInstance(document.getElementById('editProfileModal')).hide();
+            showToast('Profil berhasil diperbarui!');
         }
 
         // ========== CHATBOT FUNCTIONS ==========
