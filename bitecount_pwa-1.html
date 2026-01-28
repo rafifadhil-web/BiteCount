@@ -444,6 +444,97 @@
         .food-recommendation strong {
             color: #06B6D4;
         }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed #06B6D4;
+            border-radius: 10px;
+            padding: 40px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .file-preview {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .file-preview img {
+            max-width: 200px;
+            max-height: 150px;
+            border-radius: 8px;
+            border: 2px solid #06B6D4;
+        }
+
+        /* Profile Picture Styles */
+        .profile-picture {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #06B6D4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-picture:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .profile-picture-lg {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #06B6D4;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .profile-details {
+            flex: 1;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .edit-profile-btn {
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            border-radius: 8px;
+            color: #06B6D4;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .edit-profile-btn:hover {
+            background: rgba(6, 182, 212, 0.4);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -520,6 +611,13 @@
                                 <i class="fas fa-rocket"></i> Mulai Perjalanan
                             </button>
                         </form>
+
+                        <!-- Chatbot Button di Welcome Page -->
+                        <div class="text-center mt-4">
+                            <button class="neon-btn" onclick="showWelcomeChatbot()" style="background: linear-gradient(135deg, #10B981, #06B6D4);">
+                                <i class="fas fa-robot"></i> Tanya NutriBot AI
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -540,8 +638,28 @@
         </div>
 
         <div class="container py-4">
+            <!-- Profil User Section -->
             <div class="glass-card mb-4">
-                <h4 class="mb-3">Halo, <span id="displayName">User</span>! 👋</h4>
+                <div class="profile-info">
+                    <div class="position-relative">
+                        <img id="userProfileImage" 
+                             src="https://ui-avatars.com/api/?name=User&background=06B6D4&color=fff&size=128" 
+                             class="profile-picture"
+                             onclick="showEditProfileModal()">
+                        <span class="position-absolute bottom-0 end-0 bg-success border border-2 border-dark rounded-circle" 
+                              style="width: 12px; height: 12px;"></span>
+                    </div>
+                    <div class="profile-details">
+                        <h4 class="mb-1" id="displayName">User</h4>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="profile-badge" id="userGoalBadge">Target: Turunkan Berat</span>
+                            <button class="edit-profile-btn" onclick="showEditProfileModal()">
+                                <i class="fas fa-edit"></i> Edit Profil
+                            </button>
+                        </div>
+                        <p class="text-muted small mb-0 mt-2" id="userBio">Belum ada bio</p>
+                    </div>
+                </div>
                 
                 <div class="progress-ring mb-4">
                     <svg width="200" height="200">
@@ -602,7 +720,7 @@
         </button>
 
         <!-- Chatbot Button -->
-        <button class="fab" style="bottom: 100px; background: linear-gradient(135deg, #10B981, #06B6D4);" onclick="toggleChatbot()">
+        <button class="fab" style="bottom: 100px; background: linear-gradient(135deg, #10B981, #06B6D4);" onclick="showChatbot()">
             <i class="fas fa-robot"></i>
         </button>
     </div>
@@ -625,16 +743,20 @@
                         <p>Halo! Saya NutriBot, asisten nutrisi pintar Anda! 🌟</p>
                         <p>Saya bisa membantu:</p>
                         <ul style="margin: 10px 0; padding-left: 20px;">
-                            <li>💡 Rekomendasi makanan sesuai target kalori Anda</li>
+                            <li>📸 <strong>Analisis gambar</strong> makanan</li>
+                            <li>📄 <strong>Analisis dokumen</strong> label nutrisi</li>
+                            <li>💡 Rekomendasi makanan sesuai target</li>
                             <li>🔢 Menghitung kalori dalam makanan</li>
                             <li>🥗 Saran menu harian yang seimbang</li>
-                            <li>📊 Analisis nutrisi makanan</li>
                         </ul>
-                        <p>Silakan tanya apa saja! Contoh:</p>
+                        <p>Coba fitur upload:</p>
                         <div style="margin-top: 10px;">
-                            <button class="quick-reply-btn" onclick="sendQuickReply('Rekomendasi makanan untuk deficit kalori')">Rekomendasi makanan deficit</button>
-                            <button class="quick-reply-btn" onclick="sendQuickReply('Berapa kalori dalam nasi goreng?')">Hitung kalori nasi goreng</button>
-                            <button class="quick-reply-btn" onclick="sendQuickReply('Menu sarapan sehat')">Menu sarapan sehat</button>
+                            <button class="quick-reply-btn" onclick="showImageUploadModal()">
+                                <i class="fas fa-image"></i> Upload Gambar Makanan
+                            </button>
+                            <button class="quick-reply-btn" onclick="showDocumentUpload()">
+                                <i class="fas fa-file-alt"></i> Upload Dokumen
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -642,7 +764,10 @@
 
             <div class="glass-card">
                 <div class="d-flex gap-2">
-                    <input type="text" class="search-bar" id="chatInput" placeholder="Ketik pertanyaan Anda..." style="flex: 1;">
+                    <button class="btn btn-sm btn-outline-info" onclick="showImageUploadModal()" title="Upload File">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <input type="text" class="search-bar" id="chatInput" placeholder="Ketik pertanyaan atau upload file..." style="flex: 1;">
                     <button class="neon-btn" onclick="sendMessage()" style="padding: 12px 20px;">
                         <i class="fas fa-paper-plane"></i>
                     </button>
@@ -660,6 +785,18 @@
 
             <div class="glass-card">
                 <h4 class="mb-4">Pengaturan Profil</h4>
+                <div class="profile-info mb-4">
+                    <img id="settingsProfileImage" 
+                         src="https://ui-avatars.com/api/?name=User&background=06B6D4&color=fff&size=128" 
+                         class="profile-picture-lg">
+                    <div class="profile-details">
+                        <h5 id="settingsUserName">User</h5>
+                        <p class="text-muted" id="settingsUserEmail">user@example.com</p>
+                        <button class="edit-profile-btn" onclick="showEditProfileModal()">
+                            <i class="fas fa-edit"></i> Edit Profil
+                        </button>
+                    </div>
+                </div>
                 <div class="mb-3">
                     <strong>Target Kalori Harian:</strong> <span id="settingCalories">0</span> kkal
                 </div>
@@ -716,6 +853,168 @@
         </div>
     </div>
 
+    <!-- Modal: Welcome Chatbot -->
+    <div class="modal fade" id="welcomeChatbotModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> NutriBot AI</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" style="height: 500px; overflow: hidden;">
+                    <div class="glass-card" style="height: 400px; overflow-y: auto; margin-bottom: 10px;" id="welcomeChatContainer">
+                        <div class="chat-message bot-message">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <strong>NutriBot</strong>
+                                <p>Halo! 👋 Saya NutriBot, asisten nutrisi pintar Anda!</p>
+                                <p>Sebelum mulai, saya bisa membantu dengan:</p>
+                                <ul>
+                                    <li>💡 Menjelaskan cara menghitung kebutuhan kalori</li>
+                                    <li>📊 Membantu menentukan target yang realistis</li>
+                                    <li>🥗 Memberikan tips nutrisi dasar</li>
+                                    <li>📸 Analisis foto makanan (upload gambar)</li>
+                                    <li>📄 Analisis dokumen nutrisi</li>
+                                </ul>
+                                <p>Apa yang ingin Anda ketahui?</p>
+                                <div style="margin-top: 10px;">
+                                    <button class="quick-reply-btn" onclick="sendWelcomeQuickReply('Bagaimana cara menghitung kebutuhan kalori?')">Cara hitung kalori</button>
+                                    <button class="quick-reply-btn" onclick="sendWelcomeQuickReply('Tips diet sehat untuk pemula')">Tips diet pemula</button>
+                                    <button class="quick-reply-btn" onclick="showImageUploadModal()">📸 Upload foto makanan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card">
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-info" onclick="showImageUploadModal()" title="Upload Gambar">
+                                <i class="fas fa-image"></i>
+                            </button>
+                            <input type="text" class="search-bar" id="welcomeChatInput" placeholder="Tanya tentang nutrisi..." style="flex: 1;">
+                            <button class="neon-btn" onclick="sendWelcomeMessage()" style="padding: 10px 15px;">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Upload Gambar/Dokumen -->
+    <div class="modal fade" id="uploadModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-file-upload"></i> Upload File</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <div class="upload-area" id="uploadArea" 
+                             style="border: 2px dashed #06B6D4; border-radius: 10px; padding: 40px 20px; cursor: pointer;">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #06B6D4; margin-bottom: 15px;"></i>
+                            <h5>Drag & Drop File</h5>
+                            <p class="text-muted">atau klik untuk memilih file</p>
+                            <p><small>Maksimum: 5MB per file</small></p>
+                        </div>
+                        <input type="file" id="fileInput" accept="image/*,.pdf,.txt,.doc,.docx,.png,.jpg,.jpeg" hidden>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Jenis Analisis:</label>
+                        <select class="search-bar" id="analysisType">
+                            <option value="nutrition">Analisis Nutrisi</option>
+                            <option value="label">Analisis Label Makanan</option>
+                            <option value="recipe">Analisis Resep</option>
+                            <option value="general">Analisis Umum</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Keterangan Tambahan:</label>
+                        <textarea class="search-bar" id="fileDescription" rows="2" placeholder="Deskripsi singkat..."></textarea>
+                    </div>
+                    
+                    <div id="previewContainer" class="d-none">
+                        <h6>Preview:</h6>
+                        <div id="filePreview" class="file-preview"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="neon-btn" onclick="processUploadedFile()" id="uploadBtn" disabled>
+                        <i class="fas fa-spinner fa-spin d-none"></i>
+                        <span>Analisis File</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Edit Profile -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-user-edit"></i> Edit Profil</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Foto Profil Section -->
+                    <div class="text-center mb-4">
+                        <div class="position-relative d-inline-block">
+                            <div class="profile-picture-container" id="profilePictureContainer">
+                                <img id="profileImagePreview" 
+                                     src="https://ui-avatars.com/api/?name=User&background=06B6D4&color=fff&size=128" 
+                                     class="profile-picture-lg"
+                                     style="cursor: pointer;"
+                                     onclick="document.getElementById('profileImageInput').click()">
+                            </div>
+                            <button class="btn btn-sm btn-info position-absolute bottom-0 end-0 rounded-circle" 
+                                    style="width: 36px; height: 36px;"
+                                    onclick="document.getElementById('profileImageInput').click()">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                            <input type="file" id="profileImageInput" accept="image/*" hidden>
+                        </div>
+                        <p class="mt-2 text-muted small">Klik foto untuk upload gambar baru</p>
+                    </div>
+                    
+                    <!-- Form Edit Profile -->
+                    <div class="mb-3">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="search-bar" id="editName" placeholder="Masukkan nama Anda">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="search-bar" id="editEmail" placeholder="email@anda.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Bio / Deskripsi</label>
+                        <textarea class="search-bar" id="editBio" rows="2" placeholder="Ceritakan tentang diri Anda..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tujuan Utama</label>
+                        <select class="search-bar" id="editGoal">
+                            <option value="deficit">Turunkan Berat Badan</option>
+                            <option value="maintain">Pertahankan Berat Badan</option>
+                            <option value="surplus">Naikkan Massa Otot</option>
+                            <option value="health">Kesehatan Umum</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="neon-btn" onclick="saveProfile()">
+                        <i class="fas fa-save"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
         // Data Storage
@@ -723,6 +1022,7 @@
         let foodLog = [];
         let dailyTarget = 0;
         let chatHistory = [];
+        let currentChatType = 'dashboard'; // 'dashboard' or 'welcome'
 
         // Food Database (Makanan Lokal Indonesia)
         const foodDatabase = [
@@ -753,6 +1053,9 @@
             if (userData.name) {
                 showDashboard();
             }
+            
+            // Setup profile image upload
+            setupProfileImageUpload();
         };
 
         // Profile Setup
@@ -767,7 +1070,11 @@
                 height: parseInt(document.getElementById('height').value),
                 weight: parseInt(document.getElementById('weight').value),
                 activity: parseFloat(document.getElementById('activity').value),
-                goal: document.getElementById('goal').value
+                goal: document.getElementById('goal').value,
+                email: "",
+                bio: "",
+                profileImage: "",
+                goalText: getGoalText(document.getElementById('goal').value)
             };
 
             calculateCalories();
@@ -802,6 +1109,16 @@
             userData.bmr = Math.round(bmr);
             userData.tdee = Math.round(tdee);
             userData.dailyTarget = Math.round(dailyTarget);
+        }
+
+        // Get goal text
+        function getGoalText(goal) {
+            switch(goal) {
+                case 'deficit': return 'Turunkan Berat';
+                case 'maintain': return 'Pertahankan Berat';
+                case 'surplus': return 'Naikkan Berat';
+                default: return 'Kesehatan';
+            }
         }
 
         // Search Food
@@ -894,7 +1211,31 @@
             const remaining = userData.dailyTarget - totalCalories;
             const percentage = Math.min((totalCalories / userData.dailyTarget) * 100, 100);
 
-            document.getElementById('displayName').textContent = userData.name;
+            // Update profile section
+            document.getElementById('displayName').textContent = userData.name || 'User';
+            document.getElementById('userGoalBadge').textContent = `Target: ${userData.goalText || 'Turunkan Berat'}`;
+            document.getElementById('userBio').textContent = userData.bio || 'Belum ada bio';
+            
+            // Update profile image
+            const profileImage = document.getElementById('userProfileImage');
+            const settingsProfileImage = document.getElementById('settingsProfileImage');
+            if (userData.profileImage) {
+                profileImage.src = userData.profileImage;
+                settingsProfileImage.src = userData.profileImage;
+            } else {
+                const name = userData.name || 'User';
+                profileImage.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=06B6D4&color=fff&size=128`;
+                settingsProfileImage.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=06B6D4&color=fff&size=128`;
+            }
+
+            // Update settings page
+            document.getElementById('settingsUserName').textContent = userData.name || 'User';
+            document.getElementById('settingsUserEmail').textContent = userData.email || 'user@example.com';
+            document.getElementById('settingCalories').textContent = userData.dailyTarget || 0;
+            document.getElementById('settingBMR').textContent = userData.bmr || 0;
+            document.getElementById('settingTDEE').textContent = userData.tdee || 0;
+
+            // Update calories and macros
             document.getElementById('remainingCalories').textContent = Math.max(remaining, 0);
             document.getElementById('proteinValue').textContent = totalProtein;
             document.getElementById('carbValue').textContent = totalCarbs;
@@ -961,9 +1302,7 @@
             setTimeout(() => {
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                 document.getElementById('settingsPage').classList.add('active');
-                document.getElementById('settingCalories').textContent = userData.dailyTarget;
-                document.getElementById('settingBMR').textContent = userData.bmr;
-                document.getElementById('settingTDEE').textContent = userData.tdee;
+                updateDashboard();
                 hideLoading();
             }, 800);
         }
@@ -1023,15 +1362,108 @@
             }
         }
 
+        // ========== PROFILE FUNCTIONS ==========
+
+        function showEditProfileModal() {
+            const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+            
+            // Fill form with current data
+            document.getElementById('editName').value = userData.name || '';
+            document.getElementById('editEmail').value = userData.email || '';
+            document.getElementById('editBio').value = userData.bio || '';
+            document.getElementById('editGoal').value = userData.goal || 'deficit';
+            
+            // Set profile image preview
+            const preview = document.getElementById('profileImagePreview');
+            if (userData.profileImage) {
+                preview.src = userData.profileImage;
+            } else {
+                const name = userData.name || 'User';
+                preview.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=06B6D4&color=fff&size=128`;
+            }
+            
+            modal.show();
+        }
+
+        function setupProfileImageUpload() {
+            const profileImageInput = document.getElementById('profileImageInput');
+            const profileImagePreview = document.getElementById('profileImagePreview');
+            
+            profileImageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                // Check file size (max 2MB for profile picture)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('File terlalu besar! Maksimum 2MB untuk foto profil.');
+                    return;
+                }
+                
+                // Check file type
+                if (!file.type.startsWith('image/')) {
+                    alert('File harus berupa gambar!');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileImagePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function saveProfile() {
+            const name = document.getElementById('editName').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const bio = document.getElementById('editBio').value.trim();
+            const goal = document.getElementById('editGoal').value;
+            
+            if (!name) {
+                alert('Nama tidak boleh kosong!');
+                return;
+            }
+            
+            // Update user data
+            userData.name = name;
+            userData.email = email;
+            userData.bio = bio;
+            userData.goal = goal;
+            userData.goalText = getGoalText(goal);
+            
+            // Save profile image if changed
+            const preview = document.getElementById('profileImagePreview');
+            if (preview.src && !preview.src.includes('ui-avatars.com')) {
+                userData.profileImage = preview.src;
+            }
+            
+            // Recalculate calories if goal changed
+            if (goal !== userData.goal) {
+                userData.goal = goal;
+                calculateCalories();
+            }
+            
+            saveData();
+            updateDashboard();
+            bootstrap.Modal.getInstance(document.getElementById('editProfileModal')).hide();
+            showToast('Profil berhasil diperbarui!');
+        }
+
         // ========== CHATBOT FUNCTIONS ==========
 
-        function toggleChatbot() {
+        function showChatbot() {
             showLoading();
             setTimeout(() => {
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                 document.getElementById('chatbotPage').classList.add('active');
+                currentChatType = 'dashboard';
                 hideLoading();
             }, 800);
+        }
+
+        function showWelcomeChatbot() {
+            currentChatType = 'welcome';
+            new bootstrap.Modal(document.getElementById('welcomeChatbotModal')).show();
         }
 
         function closeChatbot() {
@@ -1041,6 +1473,11 @@
         function sendQuickReply(message) {
             document.getElementById('chatInput').value = message;
             sendMessage();
+        }
+
+        function sendWelcomeQuickReply(message) {
+            document.getElementById('welcomeChatInput').value = message;
+            sendWelcomeMessage();
         }
 
         async function sendMessage() {
@@ -1064,12 +1501,32 @@
             }, 1500);
         }
 
+        async function sendWelcomeMessage() {
+            const input = document.getElementById('welcomeChatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            addWelcomeChatMessage('user', message);
+            input.value = '';
+
+            // Show typing indicator
+            showWelcomeTypingIndicator();
+
+            // Process message with AI
+            setTimeout(() => {
+                hideWelcomeTypingIndicator();
+                const response = processWelcomeMessage(message);
+                addWelcomeChatMessage('bot', response);
+            }, 1500);
+        }
+
         function addChatMessage(sender, content) {
             const chatContainer = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
             messageDiv.className = `chat-message ${sender}-message`;
             
-            const avatar = sender === 'bot' ? '🤖' : '👤';
+            const avatar = sender === 'bot' ? '🤖' : (userData.name ? userData.name.charAt(0) : '👤');
             const name = sender === 'bot' ? 'NutriBot' : userData.name || 'Anda';
             
             messageDiv.innerHTML = `
@@ -1084,6 +1541,26 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
             
             chatHistory.push({ sender, content, timestamp: new Date() });
+        }
+
+        function addWelcomeChatMessage(sender, content) {
+            const chatContainer = document.getElementById('welcomeChatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}-message`;
+            
+            const avatar = sender === 'bot' ? '🤖' : '👤';
+            const name = sender === 'bot' ? 'NutriBot' : 'Anda';
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">
+                    <strong>${name}</strong>
+                    ${content}
+                </div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
         function showTypingIndicator() {
@@ -1105,6 +1582,28 @@
 
         function hideTypingIndicator() {
             const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        function showWelcomeTypingIndicator() {
+            const chatContainer = document.getElementById('welcomeChatContainer');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'chat-message bot-message';
+            typingDiv.id = 'welcomeTypingIndicator';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function hideWelcomeTypingIndicator() {
+            const indicator = document.getElementById('welcomeTypingIndicator');
             if (indicator) indicator.remove();
         }
 
@@ -1156,8 +1655,120 @@
                 return getHealthySnacks();
             }
             
+            // Upload related
+            if (lowerMsg.includes('upload') || lowerMsg.includes('gambar') || lowerMsg.includes('foto') || lowerMsg.includes('dokumen')) {
+                return `
+                    <p>📁 <strong>Fitur Upload File:</strong></p>
+                    <p>Saya dapat menganalisis:</p>
+                    <ul>
+                        <li>🖼️ <strong>Gambar makanan</strong> - estimasi kalori & nutrisi</li>
+                        <li>📄 <strong>Dokumen label nutrisi</strong> - analisis komposisi</li>
+                        <li>📋 <strong>Resep makanan</strong> - hitung nutrisi per porsi</li>
+                    </ul>
+                    <p>Klik tombol 📎 di samping input chat untuk mengupload file!</p>
+                    <button class="quick-reply-btn" onclick="showImageUploadModal()">
+                        <i class="fas fa-upload"></i> Upload File Sekarang
+                    </button>
+                `;
+            }
+            
             // Default response
             return getDefaultResponse();
+        }
+
+        function processWelcomeMessage(message) {
+            const lowerMsg = message.toLowerCase();
+            
+            // Calorie calculation explanation
+            if (lowerMsg.includes('cara hitung') || lowerMsg.includes('menghitung') || lowerMsg.includes('kebutuhan kalori')) {
+                return `
+                    <p>🧮 <strong>Cara Menghitung Kebutuhan Kalori:</strong></p>
+                    <div class="food-recommendation">
+                        <p><strong>1. BMR (Basal Metabolic Rate):</strong></p>
+                        <div>• Pria: (10 × berat kg) + (6.25 × tinggi cm) - (5 × usia) + 5</div>
+                        <div>• Wanita: (10 × berat kg) + (6.25 × tinggi cm) - (5 × usia) - 161</div>
+                        
+                        <p><strong>2. TDEE (Total Daily Energy Expenditure):</strong></p>
+                        <div>• BMR × tingkat aktivitas</div>
+                        <div>• Sangat ringan (jarang olahraga): ×1.2</div>
+                        <div>• Ringan (1-3x/minggu): ×1.375</div>
+                        <div>• Sedang (3-5x/minggu): ×1.55</div>
+                        <div>• Berat (6-7x/minggu): ×1.725</div>
+                        <div>• Sangat berat (olahraga 2x sehari): ×1.9</div>
+                        
+                        <p><strong>3. Target Harian:</strong></p>
+                        <div>• Turun berat: TDEE - 500 kkal</div>
+                        <div>• Pertahankan: TDEE</div>
+                        <div>• Naik berat: TDEE + 500 kkal</div>
+                    </div>
+                    <p>Contoh: Pria 30 tahun, 70kg, 170cm, aktifitas sedang = ±2500 kkal/hari</p>
+                `;
+            }
+            
+            // Diet tips for beginners
+            if (lowerMsg.includes('tips') || lowerMsg.includes('pemula') || lowerMsg.includes('awal')) {
+                return `
+                    <p>💡 <strong>Tips Diet Sehat untuk Pemula:</strong></p>
+                    <div class="food-recommendation">
+                        <p><strong>Prinsip Dasar:</strong></p>
+                        <div>1. <strong>Konsisten</strong> lebih penting daripada sempurna</div>
+                        <div>2. <strong>Minum air</strong> 2-3 liter per hari</div>
+                        <div>3. <strong>Makan perlahan</strong>, kunyah dengan baik</div>
+                        <div>4. <strong>Protein setiap makan</strong> untuk kenyang lebih lama</div>
+                        <div>5. <strong>Sayuran</strong> setengah piring setiap makan</div>
+                    </div>
+                    
+                    <div class="food-recommendation">
+                        <p><strong>Langkah Pertama:</strong></p>
+                        <div>1. Hitung kebutuhan kalori (saya bantu!)</div>
+                        <div>2. Mulai tracking makanan 3 hari pertama</div>
+                        <div>3. Fokus pada protein dan serat</div>
+                        <div>4. Kurangi minuman manis bertahap</div>
+                        <div>5. Tambahkan jalan kaki 30 menit/hari</div>
+                    </div>
+                    
+                    <p>🎯 <strong>Target realistis:</strong> 0.5-1kg per minggu untuk penurunan berat badan yang sehat.</p>
+                `;
+            }
+            
+            // Upload related in welcome chat
+            if (lowerMsg.includes('upload') || lowerMsg.includes('gambar') || lowerMsg.includes('foto')) {
+                return `
+                    <p>📸 <strong>Analisis Gambar Makanan:</strong></p>
+                    <p>Saya bisa menganalisis foto makanan Anda untuk:</p>
+                    <div class="food-recommendation">
+                        <div>✅ <strong>Estimasi kalori</strong> berdasarkan jenis makanan</div>
+                        <div>✅ <strong>Identifikasi nutrisi</strong> (protein, karbo, lemak)</div>
+                        <div>✅ <strong>Rekomendasi porsi</strong> sesuai target Anda</div>
+                        <div>✅ <strong>Tips modifikasi</strong> untuk versi lebih sehat</div>
+                    </div>
+                    <p>Cara menggunakan:</p>
+                    <ol>
+                        <li>Klik tombol 📸 di bawah</li>
+                        <li>Ambil foto makanan atau pilih dari galeri</li>
+                        <li>Tunggu analisis 2-3 detik</li>
+                        <li>Dapatkan rekomendasi nutrisi!</li>
+                    </ol>
+                    <button class="quick-reply-btn" onclick="showImageUploadModal()">
+                        <i class="fas fa-camera"></i> Ambil/Upload Foto
+                    </button>
+                `;
+            }
+            
+            // Default welcome response
+            return `
+                <p>Saya bisa membantu Anda memulai perjalanan nutrisi dengan:</p>
+                <button class="quick-reply-btn" onclick="sendWelcomeQuickReply('Bagaimana cara menghitung kebutuhan kalori?')">
+                    🧮 Hitung Kebutuhan Kalori
+                </button>
+                <button class="quick-reply-btn" onclick="sendWelcomeQuickReply('Tips diet sehat untuk pemula')">
+                    💡 Tips Diet Pemula
+                </button>
+                <button class="quick-reply-btn" onclick="showImageUploadModal()">
+                    📸 Analisis Foto Makanan
+                </button>
+                <p>Atau tanyakan langsung tentang nutrisi dan diet!</p>
+            `;
         }
 
         function calculateCaloriesResponse(message) {
@@ -1210,6 +1821,10 @@
         }
 
         function getFoodRecommendations() {
+            if (!userData.dailyTarget) {
+                return `<p>Silakan setup profil terlebih dahulu untuk mendapatkan rekomendasi personal!</p>`;
+            }
+            
             const remaining = userData.dailyTarget - foodLog.reduce((sum, f) => sum + f.calories, 0);
             const goal = userData.goal;
             
@@ -1401,6 +2016,9 @@
                 <button class="quick-reply-btn" onclick="sendQuickReply('Rekomendasi makanan deficit')">Rekomendasi makanan</button>
                 <button class="quick-reply-btn" onclick="sendQuickReply('Menu sarapan sehat')">Menu harian</button>
                 <button class="quick-reply-btn" onclick="sendQuickReply('Makanan tinggi protein')">Info nutrisi</button>
+                <button class="quick-reply-btn" onclick="showImageUploadModal()">
+                    <i class="fas fa-upload"></i> Upload File
+                </button>
             `;
         }
 
@@ -1414,12 +2032,361 @@
                 time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
             });
             saveData();
+            updateDashboard();
             showToast(`${name} berhasil ditambahkan ke log!`);
-            addChatMessage('bot', `<p>✅ <strong>${name}</strong> telah ditambahkan ke log harian Anda!</p>`);
+            
+            // Update chat with confirmation
+            const chatContainer = document.getElementById('chatContainer');
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.className = 'chat-message bot-message';
+            botMessageDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <strong>NutriBot</strong>
+                    <p>✅ <strong>${name}</strong> telah ditambahkan ke log harian Anda!</p>
+                    <p>Waktu: ${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</p>
+                    <button class="quick-reply-btn" onclick="showDashboard()">
+                        📊 Lihat Dashboard
+                    </button>
+                </div>
+            `;
+            chatContainer.appendChild(botMessageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // ========== UPLOAD FUNCTIONALITIES ==========
+
+        function showImageUploadModal() {
+            const modal = new bootstrap.Modal(document.getElementById('uploadModal'));
+            modal.show();
+            
+            // Reset modal
+            document.getElementById('previewContainer').classList.add('d-none');
+            document.getElementById('filePreview').innerHTML = '';
+            document.getElementById('uploadBtn').disabled = true;
+            
+            // Setup drag and drop
+            setupDragAndDrop();
+        }
+
+        function showDocumentUpload() {
+            showImageUploadModal();
+            document.getElementById('analysisType').value = 'label';
+        }
+
+        function setupDragAndDrop() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            
+            uploadArea.addEventListener('click', () => fileInput.click());
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#8B5CF6';
+                uploadArea.style.background = 'rgba(139, 92, 246, 0.1)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = '#06B6D4';
+                uploadArea.style.background = '';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#06B6D4';
+                uploadArea.style.background = '';
+                
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    previewFile(e.dataTransfer.files[0]);
+                }
+            });
+            
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    previewFile(e.target.files[0]);
+                }
+            });
+        }
+
+        function previewFile(file) {
+            if (!file) return;
+            
+            // Check file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File terlalu besar! Maksimum 5MB.');
+                return;
+            }
+            
+            const previewContainer = document.getElementById('previewContainer');
+            const filePreview = document.getElementById('filePreview');
+            
+            previewContainer.classList.remove('d-none');
+            
+            if (file.type.startsWith('image/')) {
+                // Preview image
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    filePreview.innerHTML = `
+                        <div class="text-center">
+                            <img src="${e.target.result}" 
+                                 style="max-width: 200px; max-height: 150px; border-radius: 8px; border: 2px solid #06B6D4;">
+                            <p class="mt-2 mb-0"><strong>${file.name}</strong></p>
+                            <p class="text-muted small">${(file.size / 1024).toFixed(2)} KB</p>
+                        </div>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // Preview document
+                filePreview.innerHTML = `
+                    <div class="text-center">
+                        <i class="fas fa-file-alt" style="font-size: 48px; color: #8B5CF6;"></i>
+                        <p class="mt-2 mb-0"><strong>${file.name}</strong></p>
+                        <p class="text-muted small">${(file.size / 1024).toFixed(2)} KB - ${file.type}</p>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('uploadBtn').disabled = false;
+        }
+
+        async function processUploadedFile() {
+            const fileInput = document.getElementById('fileInput');
+            const analysisType = document.getElementById('analysisType').value;
+            const description = document.getElementById('fileDescription').value;
+            
+            if (!fileInput.files.length) {
+                alert('Pilih file terlebih dahulu!');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const uploadBtn = document.getElementById('uploadBtn');
+            
+            // Show loading
+            uploadBtn.disabled = true;
+            uploadBtn.querySelector('i').classList.remove('d-none');
+            
+            try {
+                // Simulate processing delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Determine which chat container to use
+                let chatContainer;
+                let isWelcomeChat = false;
+                
+                if (currentChatType === 'welcome' || document.getElementById('welcomeChatbotModal').classList.contains('show')) {
+                    chatContainer = document.getElementById('welcomeChatContainer');
+                    isWelcomeChat = true;
+                } else {
+                    chatContainer = document.getElementById('chatContainer');
+                }
+                
+                // Add user message with file info
+                const userMessageDiv = document.createElement('div');
+                userMessageDiv.className = 'chat-message user-message';
+                userMessageDiv.innerHTML = `
+                    <div class="message-avatar">${isWelcomeChat ? '👤' : (userData.name ? userData.name.charAt(0) : '👤')}</div>
+                    <div class="message-content">
+                        <strong>${isWelcomeChat ? 'Anda' : (userData.name || 'Anda')}</strong>
+                        <p>📎 <strong>${file.name}</strong></p>
+                        ${description ? `<p><em>"${description}"</em></p>` : ''}
+                        <small class="text-muted">${file.type.startsWith('image/') ? '🖼️ Gambar' : '📄 Dokumen'} - ${analysisType}</small>
+                    </div>
+                `;
+                chatContainer.appendChild(userMessageDiv);
+                
+                // Process based on file type and analysis type
+                const response = await analyzeUploadedFile(file, analysisType, description);
+                
+                // Add bot response
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.className = 'chat-message bot-message';
+                botMessageDiv.innerHTML = `
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <strong>NutriBot</strong>
+                        ${response}
+                    </div>
+                `;
+                
+                chatContainer.appendChild(botMessageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                
+                // Add to chat history
+                chatHistory.push({
+                    type: 'file',
+                    fileName: file.name,
+                    analysisType: analysisType,
+                    description: description,
+                    response: response
+                });
+                
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('uploadModal')).hide();
+                
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('Terjadi kesalahan saat memproses file.');
+            } finally {
+                // Reset button
+                uploadBtn.disabled = false;
+                uploadBtn.querySelector('i').classList.add('d-none');
+                
+                // Reset form
+                document.getElementById('fileInput').value = '';
+                document.getElementById('fileDescription').value = '';
+                document.getElementById('previewContainer').classList.add('d-none');
+            }
+        }
+
+        async function analyzeUploadedFile(file, analysisType, description) {
+            // Simulate AI analysis
+            const fileType = file.type;
+            
+            if (fileType.startsWith('image/')) {
+                return analyzeImageFile(file, analysisType, description);
+            } else {
+                return analyzeDocumentFile(file, analysisType, description);
+            }
+        }
+
+        function analyzeImageFile(file, analysisType, description) {
+            // Mock AI analysis for image
+            const mockResponses = {
+                'nutrition': `
+                    <p>🔍 <strong>Analisis Gambar Makanan:</strong></p>
+                    <div class="food-recommendation">
+                        <p>Berdasarkan analisis gambar, saya mendeteksi:</p>
+                        <div>🍚 <strong>Karbohidrat:</strong> Nasi putih (perkiraan 200g) - 400 kkal</div>
+                        <div>🍗 <strong>Protein:</strong> Ayam goreng (1 potong) - 250 kkal</div>
+                        <div>🥗 <strong>Sayuran:</strong> Sayur tumis - 80 kkal</div>
+                        <div>🔥 <strong>Total Perkiraan:</strong> ~730 kkal</div>
+                    </div>
+                    <p>💡 <strong>Tips:</strong> Kombinasi yang baik! Pastikan tambahkan sumber lemak sehat seperti alpukat.</p>
+                    <button class="quick-reply-btn" onclick="addMockFoodFromImage()">
+                        ➕ Tambahkan ke Log Harian
+                    </button>
+                `,
+                'label': `
+                    <p>📊 <strong>Analisis Label Makanan:</strong></p>
+                    <div class="food-recommendation">
+                        <p>Saya membaca label nutrisi dari gambar:</p>
+                        <div>🔥 <strong>Kalori:</strong> 350 kkal per sajian</div>
+                        <div>🥩 <strong>Protein:</strong> 15g per sajian</div>
+                        <div>🍚 <strong>Karbohidrat:</strong> 45g per sajian</div>
+                        <div>🥑 <strong>Lemak:</strong> 12g per sajian</div>
+                    </div>
+                    <p>📝 <strong>Rekomendasi:</strong> Produk ini memiliki kandungan gula yang cukup tinggi. Konsumsi dalam batas wajar.</p>
+                `,
+                'recipe': `
+                    <p>📋 <strong>Analisis Resep:</strong></p>
+                    <div class="food-recommendation">
+                        <p>Resep terdeteksi: <strong>Nasi Goreng Seafood</strong></p>
+                        <div>🍤 <strong>Bahan utama:</strong> Udang, cumi, nasi, telur, sayuran</div>
+                        <div>⚖️ <strong>Porsi:</strong> 4 orang</div>
+                        <div>🔥 <strong>Kalori per porsi:</strong> ~450 kkal</div>
+                    </div>
+                    <p>💡 <strong>Saran:</strong> Kurangi minyak goreng untuk versi yang lebih sehat. Gunakan minyak zaitun.</p>
+                `,
+                'general': `
+                    <p>📸 <strong>Analisis Gambar Umum:</strong></p>
+                    <div class="food-recommendation">
+                        <p>Gambar menunjukkan makanan sehat dengan komposisi:</p>
+                        <div>🥗 <strong>Sayuran:</strong> 40% (wortel, brokoli, paprika)</div>
+                        <div>🍗 <strong>Protein:</strong> 30% (ayam panggang)</div>
+                        <div>🍚 <strong>Karbohidrat:</strong> 30% (nasi merah)</div>
+                    </div>
+                    <p>✅ <strong>Kesimpulan:</strong> Komposisi nutrisi yang seimbang! Pertahankan pola makan seperti ini.</p>
+                `
+            };
+            
+            return mockResponses[analysisType] || mockResponses['general'];
+        }
+
+        function analyzeDocumentFile(file, analysisType, description) {
+            // Mock AI analysis for document
+            const mockResponses = {
+                'label': `
+                    <p>📄 <strong>Analisis Dokumen Label Nutrisi:</strong></p>
+                    <div class="food-recommendation">
+                        <p><strong>Ringkasan Nutrisi:</strong></p>
+                        <div>🏷️ <strong>Produk:</strong> Susu Almond Organik</div>
+                        <div>📊 <strong>Ukuran sajian:</strong> 250ml</div>
+                        <div>🔥 <strong>Energi:</strong> 120 kkal</div>
+                        <div>🥩 <strong>Protein:</strong> 3g</div>
+                        <div>🍚 <strong>Karbohidrat:</strong> 15g (Gula: 8g)</div>
+                        <div>🥑 <strong>Lemak:</strong> 5g (Jenuh: 0.5g)</div>
+                    </div>
+                    <p>✅ <strong>Rekomendasi:</strong> Produk rendah lemak jenuh, cocok untuk diet. Perhatikan kandungan gula tambahan.</p>
+                `,
+                'recipe': `
+                    <p>📋 <strong>Analisis Dokumen Resep:</strong></p>
+                    <div class="food-recommendation">
+                        <p><strong>Resep: Smoothie Bowl Berry</strong></p>
+                        <div>🥣 <strong>Bahan:</strong> Pisang, berry mix, yogurt Greek, granola, madu</div>
+                        <div>⚖️ <strong>Untuk:</strong> 2 porsi</div>
+                        <div>🔥 <strong>Nutrisi per porsi:</strong></div>
+                        <div>&nbsp;&nbsp;• Kalori: 280 kkal</div>
+                        <div>&nbsp;&nbsp;• Protein: 12g</div>
+                        <div>&nbsp;&nbsp;• Karbo: 45g</div>
+                        <div>&nbsp;&nbsp;• Lemak: 6g</div>
+                    </div>
+                    <p>💡 <strong>Saran:</strong> Resep sehat! Untuk protein lebih tinggi, tambahkan bubuk protein atau chia seeds.</p>
+                `,
+                'general': `
+                    <p>📄 <strong>Analisis Dokumen:</strong></p>
+                    <div class="food-recommendation">
+                        <p>Dokumen berisi informasi nutrisi tentang:</p>
+                        <div>📈 <strong>Pola Makan Mediterania</strong></div>
+                        <div>🥗 <strong>Fitur utama:</strong> Tinggi sayuran, buah, biji-bijian, ikan</div>
+                        <div>❤️ <strong>Manfaat:</strong> Kesehatan jantung, kontrol berat badan</div>
+                        <div>🍽️ <strong>Contoh menu harian:</strong> 2000-2500 kkal</div>
+                    </div>
+                    <p>✅ <strong>Rekomendasi:</strong> Pola makan yang sangat direkomendasikan untuk kesehatan jangka panjang.</p>
+                `
+            };
+            
+            return mockResponses[analysisType] || mockResponses['general'];
+        }
+
+        function addMockFoodFromImage() {
+            // Add a mock food from image analysis
+            foodLog.push({
+                name: "Makanan dari Gambar",
+                calories: 730,
+                protein: 35,
+                carbs: 75,
+                fat: 25,
+                time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+            });
+            saveData();
+            updateDashboard();
+            showToast("Makanan ditambahkan dari analisis gambar!");
+            
+            // Update chat with confirmation
+            const chatContainer = document.getElementById('chatContainer');
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.className = 'chat-message bot-message';
+            botMessageDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <strong>NutriBot</strong>
+                    <p>✅ <strong>Makanan telah ditambahkan ke log harian!</strong></p>
+                    <p>🔥 730 kkal | 🥩 35g protein | 🍚 75g karbo | 🥑 25g lemak</p>
+                    <button class="quick-reply-btn" onclick="showDashboard()">
+                        📊 Lihat Dashboard
+                    </button>
+                </div>
+            `;
+            chatContainer.appendChild(botMessageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
         // Enter key support for chat
         document.addEventListener('DOMContentLoaded', function() {
+            // Chat input in chatbot page
             const chatInput = document.getElementById('chatInput');
             if (chatInput) {
                 chatInput.addEventListener('keypress', function(e) {
@@ -1428,6 +2395,32 @@
                     }
                 });
             }
+            
+            // Chat input in welcome chatbot modal
+            const welcomeChatInput = document.getElementById('welcomeChatInput');
+            if (welcomeChatInput) {
+                welcomeChatInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendWelcomeMessage();
+                    }
+                });
+            }
+            
+            // File input description
+            const fileDescription = document.getElementById('fileDescription');
+            if (fileDescription) {
+                fileDescription.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        processUploadedFile();
+                    }
+                });
+            }
+        });
+
+        // Initialize upload area when modal shown
+        document.getElementById('uploadModal').addEventListener('shown.bs.modal', function () {
+            setupDragAndDrop();
         });
     </script>
 </body>
